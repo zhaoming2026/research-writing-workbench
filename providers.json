@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "checked_on": "2026-11-05",
+  "providers": [
+    {
+      "id": "ollama",
+      "name": "Ollama 本地模型",
+      "group": "local",
+      "protocol": "openai",
+      "endpoint": "http://127.0.0.1:11434/v1",
+      "key_required": false,
+      "domestic": false,
+      "cost_note": "本地模型无云端API调用费；需先安装并加载模型，占用本机内存和算力。云端模型标签不计入本地免费选择。",
+      "sources": [
+        "https://docs.ollama.com/api/openai-compatibility"
+      ],
+      "models": [],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "lmstudio",
+      "name": "LM Studio 本地模型",
+      "group": "local",
+      "protocol": "openai",
+      "endpoint": "http://127.0.0.1:1234/v1",
+      "key_required": false,
+      "domestic": false,
+      "cost_note": "在LM Studio中下载模型并启动本地服务后使用；本地运行无需云API费用，启用服务认证时填写本机令牌。",
+      "sources": [
+        "https://lmstudio.ai/docs/developer/openai-compat/models",
+        "https://lmstudio.ai/docs/app/offline"
+      ],
+      "models": [],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "zhipu",
+      "name": "智谱 GLM",
+      "group": "free_cloud",
+      "protocol": "openai",
+      "endpoint": "https://open.bigmodel.cn/api/paas/v4",
+      "key_required": true,
+      "domestic": true,
+      "cost_note": "GLM-4.7-Flash官方提供免费调用，需自己的API Key；其他型号可能收费，配额与政策以控制台为准。",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/develop/openai/introduction",
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.7-flash",
+        "https://www.zhipuai.cn/zh/news/148"
+      ],
+      "models": [
+        {
+          "id": "glm-4.7-flash",
+          "label": "GLM-4.7-Flash · 免费API",
+          "cost": "free_api",
+          "price_source": "https://www.zhipuai.cn/zh/news/148"
+        },
+        {
+          "id": "glm-5.3",
+          "label": "GLM-5.3 · 按量计费",
+          "cost": "paid"
+        }
+      ],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "siliconflow",
+      "name": "硅基流动 SiliconFlow",
+      "group": "free_cloud",
+      "protocol": "openai",
+      "endpoint": "https://api.siliconflow.cn/v1",
+      "key_required": true,
+      "domestic": true,
+      "cost_note": "同一平台包含免费与付费模型。这里只把官方价格页明确标示免费的型号标为免费；需API Key，调用前仍应核对当期价格与限额。",
+      "sources": [
+        "https://docs.siliconflow.cn/docs/userguide/quickstart",
+        "https://www.siliconflow.cn/pricing"
+      ],
+      "models": [
+        {
+          "id": "XingChenAGI/Xing4.0-29B",
+          "label": "星辰 Xing4.0-29B · 免费API",
+          "cost": "free_api",
+          "price_source": "https://www.siliconflow.cn/pricing"
+        },
+        {
+          "id": "Qwen/Qwen3.5-27B",
+          "label": "Qwen3.5-27B · 按量计费",
+          "cost": "paid"
+        }
+      ],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter 免费模型",
+      "group": "free_cloud",
+      "protocol": "openai",
+      "endpoint": "https://openrouter.ai/api/v1",
+      "key_required": true,
+      "domestic": false,
+      "cost_note": "openrouter/free和:free型号提供限额免费调用，需API Key。免费路由会选择不同的实际模型；没有可用配额时返回错误，不自动改用付费型号。",
+      "sources": [
+        "https://openrouter.ai/collections/free-models",
+        "https://openrouter.ai/openrouter/free"
+      ],
+      "models": [
+        {
+          "id": "openrouter/free",
+          "label": "Free Models Router · 限额免费",
+          "cost": "free_api",
+          "price_source": "https://openrouter.ai/openrouter/free"
+        }
+      ],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "group": "domestic",
+      "protocol": "openai",
+      "endpoint": "https://api.deepseek.com",
+      "key_required": true,
+      "domestic": true,
+      "cost_note": "官方API通常按量计费；免费网页聊天不等于免费API。填写自己的Key，可读取账户实际可用模型。",
+      "sources": [
+        "https://api-docs.deepseek.com/"
+      ],
+      "models": [
+        {
+          "id": "deepseek-flash",
+          "label": "DeepSeek Flash · 按量计费",
+          "cost": "paid"
+        },
+        {
+          "id": "deepseek-v4-pro",
+          "label": "DeepSeek V4 Pro · 按量计费",
+          "cost": "paid"
+        }
+      ],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "qwen",
+      "name": "通义千问 · 阿里云百炼",
+      "group": "domestic",
+      "protocol": "openai",
+      "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "key_required": true,
+      "domestic": true,
+      "cost_note": "按实际模型计费，新客额度不视为永久免费。需同地域API Key；新工作空间可按官方控制台改成包含WorkspaceId的地址。",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/compatibility-of-openai-with-dashscope",
+        "https://help.aliyun.com/zh/model-studio/get-api-key"
+      ],
+      "models": [
+        {
+          "id": "qwen-plus",
+          "label": "Qwen Plus · 按量计费",
+          "cost": "paid"
+        }
+      ],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "kimi",
+      "name": "Kimi · 月之暗面",
+      "group": "domestic",
+      "protocol": "openai",
+      "endpoint": "https://api.moonshot.cn/v1",
+      "key_required": true,
+      "domestic": true,
+      "cost_note": "API通常按量计费；中国站与国际站的地址和Key不能混用，模型名称以账户可用列表为准。",
+      "sources": [
+        "https://platform.kimi.com/docs/get-api-key",
+        "https://platform.kimi.com/docs/models"
+      ],
+      "models": [
+        {
+          "id": "kimi-k3.1-pro",
+          "label": "Kimi K3.1 Pro · 按量计费",
+          "cost": "paid"
+        }
+      ],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "doubao",
+      "name": "豆包 · 火山方舟",
+      "group": "domestic",
+      "protocol": "openai",
+      "endpoint": "https://ark.cn-beijing.volces.com/api/v3",
+      "key_required": true,
+      "domestic": true,
+      "cost_note": "按量计费或使用账户额度；模型字段填控制台提供的模型ID或推理接入点ID，不能把豆包聊天账号当作API授权。",
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/compatible-with-openai-sdk?lang=zh"
+      ],
+      "models": [],
+      "checked_on": "2026-11-05"
+    },
+    {
+      "id": "custom",
+      "name": "自定义兼容接口 / 原生Anthropic",
+      "group": "custom",
+      "protocol": "openai",
+      "endpoint": "",
+      "key_required": false,
+      "domestic": false,
+      "cost_note": "保留自定义地址、协议和模型输入。是否收费由实际服务决定，未核实的模型不标为免费。",
+      "sources": [],
+      "models": [],
+      "checked_on": "2026-11-05"
+    }
+  ],
+  "notice": "这是官方文档核对后的接入预设，不代表这些账户和模型均已实测。免费标示、模型与配额会变化，以当前控制台为准。"
+}

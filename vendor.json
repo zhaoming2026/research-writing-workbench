@@ -1,0 +1,73 @@
+[
+  {
+    "name": "pdfjs-dist",
+    "version": "6.5.438",
+    "integrity": "sha512-vg8Pw1x+AFKy4AMDvhuWl5cOYV8d698UoEANoFFhc79hqXDnZQqnOXoxw3HG907WHOg1JYOvLhP756boddFxpA==",
+    "files": {
+      "LICENSE": "pdf/LICENSE",
+      "build/pdf.min.mjs": "pdf/pdf.min.mjs",
+      "build/pdf.worker.min.mjs": "pdf/pdf.worker.min.mjs",
+      "build/pdf.renderer.min.mjs": "pdf/pdf.renderer.min.mjs",
+      "cmaps/": "pdf/cmaps/",
+      "standard_fonts/": "pdf/standard_fonts/",
+      "wasm/": "pdf/wasm/",
+      "iccs/": "pdf/iccs/"
+    }
+  },
+  {
+    "name": "fflate",
+    "version": "0.8.3",
+    "integrity": "sha512-tbZNuJrLwGUp3zshBtdy4W+ORxZuIh8a5ilyIEQDC5rY1f3U20JMry0Ll3WBzU58EZKsEuJFXhb5gwv8CsPvgA==",
+    "files": {
+      "LICENSE": "fflate/LICENSE",
+      "esm/browser.js": "fflate/browser.js"
+    }
+  },
+  {
+    "name": "diff",
+    "version": "9.0.0",
+    "integrity": "sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw==",
+    "files": {
+      "LICENSE": "diff/LICENSE",
+      "libesm/diff/array.js": "diff/array.js",
+      "libesm/diff/base.js": "diff/base.js"
+    }
+  },
+  {
+    "name": "tesseract.js",
+    "version": "7.0.0",
+    "integrity": "sha512-exPBkd+z+wM1BuMkx/Bjv43OeLBxhL5kKWsz/9JY+DXcXdiBjiAch0V49QR3oAJqCaL5qURE0vx9Eo+G5YE7mA==",
+    "files": {
+      "LICENSE.md": "ocr/LICENSE.md",
+      "dist/tesseract.esm.min.js": "ocr/tesseract.esm.min.js",
+      "dist/worker.min.js": "ocr/worker.min.js",
+      "dist/worker.min.js.LICENSE.txt": "ocr/worker.min.js.LICENSE.txt",
+      "dist/tesseract.min.js.LICENSE.txt": "ocr/tesseract.min.js.LICENSE.txt"
+    }
+  },
+  {
+    "name": "tesseract.js-core",
+    "version": "7.0.0",
+    "integrity": "sha512-WnNH518NzmbSq9zgTPeoF8c+xmilS8rFIl1YKbk/ptuuc7p6cLNELNuPAzcmsYw450ca6bLa8j3t0VAtq435Vw==",
+    "files": {
+      "LICENSE": "ocr/core-LICENSE",
+      "tesseract-core-lstm.wasm.js": "ocr/tesseract-core-lstm.wasm.js"
+    }
+  },
+  {
+    "name": "@tesseract.js-data/eng",
+    "version": "1.0.0",
+    "integrity": "sha512-mbTumm6KQPUHyzTPQaF3ObXYnx0SqqfV2nabqFVQBwD6Kl7PhGSLSzOlfFTWy0P3BjghaSKA2W9GB19Jk+ZcTg==",
+    "files": {
+      "4.0.0_best_int/eng.traineddata.gz": "ocr/lang/eng.traineddata.gz"
+    }
+  },
+  {
+    "name": "@tesseract.js-data/chi_sim",
+    "version": "1.0.0",
+    "integrity": "sha512-iuErURkPbECDUazgsLn/r3c+tU2y5o5S/w14d0A/YiagfsjYyZKgTo75RUpsGJ311qtu0dIX4hqnXAAjmqf2CA==",
+    "files": {
+      "4.0.0_best_int/chi_sim.traineddata.gz": "ocr/lang/chi_sim.traineddata.gz"
+    }
+  }
+]
