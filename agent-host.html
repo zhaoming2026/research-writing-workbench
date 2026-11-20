@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>研稿 · 智能体嵌入示例</title><link rel="icon" href="data:,"><link rel="stylesheet" href="./agent.css"></head>
+<body><main class="host-demo">
+<header><a href="./agent.html" class="brand">研稿<span>智能体嵌入示例</span></a></header>
+<h1>菜单选择交给已有智能体</h1><p>左侧菜单在使用者点击后提交完整请求。宿主将 prompt 交给现有模型，附件通过宿主原有入口读取。</p>
+<div class="host-columns"><iframe id="research-menu" title="科研写作功能选择"></iframe><section><h2>宿主收到的请求</h2><p id="host-status" role="status">等待菜单加载</p><textarea id="host-request" readonly aria-label="宿主实际收到的提示词"></textarea><h2>接入代码</h2><p class="hint">设置 iframe 的 host_origin 为你自己页面的来源地址。收到提交事件后调用你现有的智能体。</p><pre id="integration-code" class="host-code"></pre><button id="copy-code">复制接入代码</button></section></div>
+<footer><p>这是请求传递示例。模型调用接入你使用的智能体服务。</p></footer>
+</main><script type="module" src="./agent-host.js"></script></body></html>

@@ -63,7 +63,7 @@ async function getSource(meta) {
   return sourceRequest;
 }
 
-async function templateFor(task, meta) {
+export async function templateFor(task, meta) {
   if (templates.has(task.id)) return templates.get(task.id);
   const source = await getSource(meta);
   let value = source.slice(task.start, task.start + task.length);

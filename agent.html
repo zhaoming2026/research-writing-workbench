@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>研稿 · 智能体功能菜单</title><link rel="icon" href="data:,"><link rel="stylesheet" href="./agent.css">
+</head>
+<body>
+<main>
+<header><a href="./" class="brand">研稿<span>智能体功能菜单</span></a><a href="./agent-host.html" target="_blank" rel="noopener">嵌入示例 ↗</a></header>
+<section class="intro"><h1>把写作功能放进你的智能体</h1><p>下载后直接粘贴，或将主指令与完整规则导入知识库。使用者可以按编号选功能，也可在支持的界面里点击选择。</p><div class="download-actions"><button type="button" id="download-agent" class="primary">下载通用嵌入包 ↓</button><button type="button" id="copy-agent">复制单文件完整版</button></div></section>
+<form id="request-form">
+<fieldset class="profile"><legend>本次研究设置</legend><div class="profile-grid">
+<label>研究领域<input id="field" required maxlength="200" placeholder="材料科学、生态学、医学……"></label>
+<label>具体方向<input id="direction" required maxlength="300" placeholder="填写本次研究方向"></label>
+<label>目标期刊或会议<span>选填</span><input id="venue" maxlength="300" placeholder="按你的投稿目标填写"></label>
+</div></fieldset>
+<fieldset><legend>选择功能</legend><div id="task-groups"></div><div class="selection-row"><p id="selection-status" aria-live="polite">选择一项或多项功能</p><button id="clear-tasks" type="button" class="quiet">清空选择</button></div><label class="automatic"><input id="automatic" type="checkbox"><b>自动处理</b><span>由智能体按实际材料选择功能</span></label></fieldset>
+<label class="material">本次材料<span>也可通过智能体原有的上传入口提供</span><textarea id="material" rows="5" placeholder="可粘贴正文或文件的已识别内容。留空时，智能体会读取其当前对话中的实际附件。"></textarea></label>
+<div class="actions"><button type="submit" id="prepare" class="primary">生成给智能体的请求 →</button><button type="button" id="send-host" hidden>交给当前智能体</button></div>
+</form>
+<p id="status" role="status" aria-live="polite"></p>
+<section id="preview" hidden><div class="preview-heading"><h2>本次完整请求</h2><button id="copy-request">复制请求</button></div><p class="hint">请求包含所选功能的完整规则，交由你使用的智能体执行。</p><textarea id="request-output" rows="10" readonly aria-label="完整请求提示词"></textarea></section>
+<details class="source-access"><summary>原帖读取与离线导入</summary><p>规则从原作者固定版本读取。加载遇到问题时，可下载链接中的原版 README.md 并导入。</p><a id="source-file-link" target="_blank" rel="noopener noreferrer">查看原版 README.md ↗</a><input id="source-upload" type="file" accept=".md,.txt"><p id="source-status" role="status">下载包或生成请求时读取原帖。</p></details>
+<footer>提示词来源 <a href="https://github.com/Leey21/awesome-ai-research-writing" target="_blank" rel="noopener noreferrer">Leey21 · awesome-ai-research-writing</a><p>编号菜单可用于普通聊天。点击式嵌入需要宿主支持自定义界面、卡片或 iframe，文件识别使用宿主的实际能力。</p></footer>
+</main><script type="module" src="./agent.js"></script>
+</body></html>
