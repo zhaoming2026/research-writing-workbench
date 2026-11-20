@@ -58,10 +58,26 @@ async function requestModel(config, path, payload, { listing = false } = {}) {
 
 async function callModel(config, instructions, input, maxTokens = 8192) {
   const model = config.model.trim();
+  const responses = config.protocol === 'responses';
+  if (responses) {
+    const { data } = await requestModel(config, '/responses', {
+      model, instructions, input, max_output_tokens: maxTokens, store: false, stream: false,
+    });
+    if (!['completed', 'incomplete'].includes(data.status)) throw Error('模型响应尚未完成，请检查服务状态后重试。');
+    if (data.status === 'incomplete' && data.incomplete_details?.reason !== 'max_output_tokens') {
+      throw Error('模型未完成本次输出，请核对请求内容与服务限制。');
+    }
+    const text = (data.output || []).filter(item => item.type === 'message')
+      .flatMap(item => item.content || []).filter(block => block.type === 'output_text' && typeof block.text === 'string')
+      .map(block => block.text).join('\n');
+    if (!text.trim()) throw Error('模型返回了空正文。');
+    return { text, model: data.model || model, finish_reason: data.status === 'incomplete' ? 'length' : 'stop' };
+  }
   const anthropic = config.protocol === 'anthropic';
+  const limit = new URL(config.endpoint).hostname === 'api.openai.com' ? 'max_completion_tokens' : 'max_tokens';
   const payload = anthropic
     ? { model, system: instructions, messages: [{ role: 'user', content: input }], max_tokens: maxTokens }
-    : { model, messages: [{ role: 'system', content: instructions }, { role: 'user', content: input }], max_tokens: maxTokens };
+    : { model, messages: [{ role: 'system', content: instructions }, { role: 'user', content: input }], [limit]: maxTokens };
   const { data } = await requestModel(config, anthropic ? '/messages' : '/chat/completions', payload);
   const choice = data.choices?.[0];
   const content = anthropic ? data.content : choice?.message?.content;
@@ -205,7 +221,7 @@ export async function api(path, body) {
     case '/api/models/list': return modelList(body.config);
     case '/api/models/test': {
       const start = performance.now();
-      const response = await callModel(body.config, '只返回 OK。', '连接测试。', 300);
+      const response = await callModel(body.config, '只返回 OK。', '连接测试。', body.config.protocol === 'responses' ? 2048 : 300);
       return { status: response.finish_reason === 'length' ? 'incomplete' : 'connected',
         reported_model: response.model, latency_ms: Math.round(performance.now() - start) };
     }

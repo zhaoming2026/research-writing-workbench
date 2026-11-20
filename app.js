@@ -41,7 +41,9 @@ function snapshot(body) { return JSON.parse(JSON.stringify(body)); }
 function modelAvailable() { return state.serverModel || (state.config.endpoint && state.config.model); }
 
 function draftModel() {
-  return { endpoint: $('#endpoint').value.trim(), model: $('#model-name').value.trim(), api_key: $('#api-key').value,
+  const model = $('#model-name').value.trim();
+  if (/\s/.test(model) || /^https?:\/\//i.test(model)) throw Error('模型ID应填写一个完整名称。可从候选列表选择，或手动填写服务商提供的ID。');
+  return { endpoint: $('#endpoint').value.trim(), model, api_key: $('#api-key').value.trim(),
     protocol: $('#model-protocol').value, provider: $('#model-provider').value || 'custom', free_only: $('#free-only').checked };
 }
 function modelFingerprint(config) { return JSON.stringify(config); }
@@ -50,6 +52,14 @@ function modelStatus(text, error = false) {
 }
 function modelChanged() { state.checkedModel = null; modelStatus('配置已更改，尚未验证当前连接。'); }
 function providerById(id) { return state.providers.find(provider => provider.id === id); }
+function renderModelChoice() {
+  const manual = !$('#model-preset').value;
+  const provider = providerById($('#model-provider').value);
+  $('#model-name-row').hidden = provider?.group === 'international' && !manual;
+  const text = $('#model-name').value.trim();
+  $('#model-choice-note').textContent = manual ? '手动填写该服务提供的模型ID，也可以先读取账户可用模型。'
+    : '已选择 ' + text;
+}
 function fillModelOptions(models, live = false) {
   const select = $('#model-preset'), typed = $('#model-name').value;
   select.replaceChildren(new Option('手动填写模型ID', ''));
@@ -59,6 +69,7 @@ function fillModelOptions(models, live = false) {
     select.add(new Option(label, model.id));
   }
   if ([...select.options].some(option => option.value === typed)) select.value = typed;
+  renderModelChoice();
 }
 function applyProvider(id, reset = true) {
   const provider = providerById(id); if (!provider) return;
@@ -72,13 +83,20 @@ function applyProvider(id, reset = true) {
   $('#model-name').placeholder = provider.group === 'local' ? '先读取本机已下载或已加载的模型，也可手动填写' : provider.id === 'doubao' ? '填写控制台的模型ID或推理接入点ID' : '选择候选模型，或填写账户可用模型ID';
   const links = $('#provider-links'); links.replaceChildren();
   provider.sources.forEach((url, index) => { const link = el('a', index ? '官方说明 ' + (index + 1) : '查看官方接入说明'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer'; links.append(link); });
+  if (provider.key_url) {
+    const link = el('a', provider.key_label); link.href = provider.key_url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+    links.prepend(link);
+  }
+  const official = provider.group === 'international';
+  $('#endpoint').readOnly = official; $('#model-protocol').disabled = official;
+  $('#endpoint-note').textContent = official ? '官方地址与协议已自动填写。使用自有网关时选择「自定义兼容接口」。' : '';
   fillModelOptions(provider.models); $('#model-advanced').open = id === 'custom';
   if (reset) modelStatus(provider.group === 'local' ? '先启动本地模型服务，再点击“读取服务可用模型”。' : '预设已填写，尚未连接。请使用该服务自己的API Key。');
 }
 function renderProviders() {
   const select = $('#model-provider'), selected = select.value || state.draftProvider;
   select.replaceChildren();
-  const groups = { local: '本地免费运行', free_cloud: '含免费型号的云服务', domestic: '国产云模型', custom: '自定义与其他接口' };
+  const groups = { local: '本地免费运行', international: 'GPT 与 Gemini 官方接口', free_cloud: '含免费型号的云服务', domestic: '国产云模型', custom: '自定义与其他接口' };
   for (const [group, label] of Object.entries(groups)) {
     const available = state.providers.filter(provider => provider.group === group && (!$('#free-only').checked || group === 'local' || provider.models.some(model => model.cost === 'free_api')));
     if (!available.length) continue;
@@ -98,6 +116,7 @@ async function modelDiagnostic(test = false) {
     state.token = $('#service-token').value;
     const config = draftModel(); modelStatus(test ? '正在发送固定短句测试连接，不会提交论文内容……' : '正在读取服务返回的模型列表……');
     const result = await api(test ? '/api/models/test' : '/api/models/list', { config });
+    if (modelFingerprint(draftModel()) !== modelFingerprint(config)) return;
     if (test) {
       state.checkedModel = result.status === 'connected' ? { fingerprint: modelFingerprint(config), reported: result.reported_model } : null;
       modelStatus(result.status === 'connected' ? '连接已验证 · 实际返回模型：' + result.reported_model + ' · ' + result.latency_ms + ' ms' : '模型有响应，但测试输出未完成；未标记为验证通过。');
@@ -373,7 +392,13 @@ $('#clear-tasks').onclick = () => { state.selected.clear(); document.querySelect
 $('#run').onclick = () => act('manual'); $('#auto-run').onclick = () => act('auto'); $('#prepare').onclick = () => act('prepare');
 $('#model-open').onclick = () => $('#model-dialog').showModal(); $('#model-close').onclick = () => $('#model-dialog').close();
 $('#model-save').onclick = () => {
-  state.config = draftModel(); state.token = $('#service-token').value;
+  try {
+    const config = draftModel();
+    const useServerModel = state.serverModel && !config.model && !config.endpoint;
+    if (!useServerModel && (!config.model || !config.endpoint)) throw Error('请选择模型，或填写完整的自定义配置。');
+    state.config = config;
+  } catch (error) { modelStatus(error.message, true); return; }
+  state.token = $('#service-token').value;
   const checked = state.checkedModel?.fingerprint === modelFingerprint(state.config);
   $('#connection').textContent = checked ? '已连接 · ' + state.checkedModel.reported : modelAvailable() ? '模型配置已填写 · 尚未验证' : '公开版 · 模型未配置';
   $('#model-dialog').close();
@@ -386,7 +411,11 @@ $('#free-only').onchange = () => {
   if ($('#free-only').checked && provider?.group !== 'local' && !provider?.models.some(model => model.id === $('#model-name').value && model.cost === 'free_api')) $('#model-name').value = provider?.models.find(model => model.cost === 'free_api')?.id || '';
   fillModelOptions(provider?.models || []);
 };
-$('#model-preset').onchange = () => { if ($('#model-preset').value) $('#model-name').value = $('#model-preset').value; modelChanged(); };
+$('#model-preset').onchange = () => {
+  $('#model-name').value = $('#model-preset').value;
+  renderModelChoice(); modelChanged();
+  if (!$('#model-preset').value) $('#model-name').focus();
+};
 for (const id of ['endpoint', 'model-name', 'api-key', 'model-protocol']) $('#' + id).addEventListener('input', modelChanged);
 $('#models-refresh').onclick = () => modelDiagnostic(false); $('#model-test').onclick = () => modelDiagnostic(true);
 $('#document-close').onclick = $('#document-done').onclick = () => { $('#document-dialog').close(); renderDocuments(); };

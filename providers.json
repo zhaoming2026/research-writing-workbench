@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "checked_on": "2026-11-05",
+  "version": 2,
+  "checked_on": "2026-11-20",
   "providers": [
     {
       "id": "ollama",
@@ -32,6 +32,86 @@
       ],
       "models": [],
       "checked_on": "2026-11-05"
+    },
+    {
+      "id": "openai",
+      "name": "GPT · OpenAI 官方",
+      "group": "international",
+      "protocol": "responses",
+      "endpoint": "https://api.openai.com/v1",
+      "key_required": true,
+      "domestic": false,
+      "cost_note": "选择模型后自动使用官方 Responses 接口。API 按账户规则计费，请填写 OpenAI 平台创建的 API Key。候选型号的可用权限可通过读取账户模型列表核对。",
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/reference/resources/responses/methods/create",
+        "https://platform.openai.com/api-keys"
+      ],
+      "key_url": "https://platform.openai.com/api-keys",
+      "key_label": "创建 OpenAI API Key",
+      "models": [
+        {
+          "id": "gpt-6.2-sol",
+          "label": "GPT-6.2 Sol · 日常写作与综合处理",
+          "cost": "paid"
+        },
+        {
+          "id": "gpt-6.2-astra",
+          "label": "GPT-6.2 Astra · 复杂推理与深入分析",
+          "cost": "paid"
+        },
+        {
+          "id": "gpt-6.1-terra",
+          "label": "GPT-6.1 Terra · 自然表达与文字处理",
+          "cost": "paid"
+        },
+        {
+          "id": "gpt-6-luna",
+          "label": "GPT-6 Luna · 低成本批量处理",
+          "cost": "paid"
+        }
+      ],
+      "checked_on": "2026-11-20"
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini · Google 官方",
+      "group": "international",
+      "protocol": "openai",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "key_required": true,
+      "domestic": false,
+      "cost_note": "自动填写 Google 官方兼容接口，使用 Google AI Studio 创建的 Gemini API Key。计费、免费额度和可用地区以当前账户为准，可读取账户模型列表后选择。",
+      "sources": [
+        "https://aistudio.google.com/docs/openai",
+        "https://aistudio.google.com/docs/models",
+        "https://aistudio.google.com/apikey"
+      ],
+      "key_url": "https://aistudio.google.com/apikey",
+      "key_label": "创建 Gemini API Key",
+      "models": [
+        {
+          "id": "gemini-4-hydrogen",
+          "label": "Gemini 4 Hydrogen · 日常写作与综合处理",
+          "cost": "account_dependent"
+        },
+        {
+          "id": "gemini-4-neon",
+          "label": "Gemini 4 Neon · 复杂研究分析",
+          "cost": "account_dependent"
+        },
+        {
+          "id": "gemini-4-carbon",
+          "label": "Gemini 4 Carbon · 深入推理",
+          "cost": "account_dependent"
+        },
+        {
+          "id": "gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash-Lite · 低成本快速处理",
+          "cost": "account_dependent"
+        }
+      ],
+      "checked_on": "2026-11-20"
     },
     {
       "id": "zhipu",

@@ -26,10 +26,11 @@
 <select id="model-provider" aria-label="模型服务"><option value="custom">自定义兼容接口</option></select>
 <div id="provider-info" class="provider-info"><p id="provider-note">也可以直接填写已在使用的接口。</p><div id="provider-links"></div></div>
 <label>选择候选模型<select id="model-preset"><option value="">手动填写模型ID</option></select></label>
-<label>模型ID <span class="optional">可以编辑</span><input id="model-name" placeholder="选择候选模型，或填写账户实际提供的ID"></label>
+<p id="model-choice-note" class="muted" role="status"></p>
+<label id="model-name-row">模型ID <span class="optional">手动填写时使用</span><input id="model-name" placeholder="选择候选模型，或填写账户实际提供的ID"></label>
 <div class="model-tools"><button id="models-refresh" class="quiet">读取服务可用模型</button><button id="model-test" class="quiet">测试连接</button></div>
 <label id="api-key-label">API Key <span id="key-requirement" class="optional"></span><input id="api-key" type="password" autocomplete="off" placeholder="填写当前服务自己的密钥"></label>
-<details id="model-advanced" open><summary>接口地址与高级设置</summary><label>接口协议<select id="model-protocol"><option value="openai">Chat Completions 兼容接口</option><option value="anthropic">Anthropic Messages 原生接口</option></select></label><label>接口基础地址<input id="endpoint" type="url" placeholder="https://你的服务商/v1"></label><input type="hidden" id="service-token"></details>
+<details id="model-advanced" open><summary>接口地址与高级设置</summary><label>接口协议<select id="model-protocol"><option value="responses">OpenAI Responses 官方接口</option><option value="openai">Chat Completions 兼容接口</option><option value="anthropic">Anthropic Messages 原生接口</option></select></label><label>接口基础地址<input id="endpoint" type="url" placeholder="https://你的服务商/v1"></label><p id="endpoint-note" class="muted"></p><input type="hidden" id="service-token"></details>
 <div id="model-status" class="model-status" role="status" aria-live="polite">尚未测试连接。</div>
 <p class="muted">浏览器直连所选服务，服务须允许网页跨域访问。读取列表只查询模型名称。连接测试只发送固定短句，云服务可能计费；免费配额和价格以服务商当前规则为准。此处不会自动切换到付费型号。</p>
 <button id="model-save" class="primary">使用此配置 →</button>
